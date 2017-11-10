@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block content %}		
+<div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="#">Home</a>
+        </li>
+        <li>
+            <a href="#">Forms</a>
+        </li>
+    </ul>
+</div>
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Form Elements</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+				<form role="form" method="post">
+						{% for msg  in get_flashed_messages(category_filter=["OK"]) %}
+                          <div class="alert alert-success alert-dismissible">
+			                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			                <h4><i class="icon fa fa-check"></i> 操作成功！</h4>
+			               		 {{ msg }}
+			              </div>
+			            {% endfor %}
+			            {% for msg  in get_flashed_messages(category_filter=["err"]) %}
+                          <div class="alert alert-danger alert-dismissible">
+			                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+			                <h4><i class="icon fa fa-ban"></i> 添加失败!</h4>
+			                	{{ msg }}
+			              </div>
+			            {% endfor %}
+					
+						
+						<div class="input-group col-md-4">
+							<label class="control-label" for="alias">{{ form.alias.label }}</label>
+							{{ form.alias }}
+							{% for err in form.alias.errors %}
+							<div class="alert alert-danger">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<strong>Oh snap!</strong> {{ err }}
+							</div>
+							{% endfor %}
+						</div>
+						
+					
+						
+						<div class="input-group col-md-4">
+							<label class="control-label" for="ip">Ip</label>
+							{{ form.ip1 }}
+							{% for err in form.ip1.errors %}
+							<div class="alert alert-danger">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<strong>Oh snap!</strong> {{ err }}
+							</div>
+							{% endfor %}
+						</div>
+						
+					
+						
+						<div class="input-group col-md-4">
+							<label class="control-label" for="ip2">Ip2</label>
+							{{ form.ip2 }}
+							{% for err in form.ip2.errors %}
+							<div class="alert alert-danger">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<strong>Oh snap!</strong> {{ err }}
+							</div>
+							{% endfor %}
+						</div>
+						
+					
+						
+						<div class="input-group col-md-4">
+							<label class="control-label" for="port">Port</label>
+							{{ form.port }}
+							{% for err in form.port.errors %}
+							<div class="alert alert-danger">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<strong>Oh snap!</strong> {{ err }}
+							</div>
+							{% endfor %}
+						</div>
+						
+					
+						
+						<div class="input-group col-md-4">
+							<label class="control-label" for="remote_user">Remote User</label>
+							{{ form.remote_user }}
+							{% for err in form.remote_user.errors %}
+							<div class="alert alert-danger">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<strong>Oh snap!</strong> {{ err }}
+							</div>
+							{% endfor %}
+						</div>
+						
+						<div class="input-group col-md-4">
+							<label class="control-label" for="remote_user">Group</label>
+							{{ form.group_id}}
+							{% for err in form.group_id.errors %}
+							<div class="alert alert-danger">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<strong>Oh snap!</strong> {{ err }}
+							</div>
+							{% endfor %}
+						</div>
+					
+					</br>
+                    {{ form.submit }}
+                    {{ form.csrf_token }}
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+
+</div><!--/row-->
+{% endblock %}

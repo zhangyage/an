@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="#">Home</a>
+        </li>
+        <li>
+            <a href="#">Forms</a>
+        </li>
+    </ul>
+</div>
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Form Elements</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+				<form role="form" method="post" action=/hosts/host/zhang/add_sshkey>
+					<input id="csrf_token" name="csrf_token" type="hidden" value="IjM1ODEwMWJlNTM2NDE3YzRlNDNjNWEyYzU5ZDE4NTcwMjU4NjFjOTQi.DOW9dg.LBzcnH8fc-Y0qY3-EcJxzVhmkI0">
+						<!--alias-->
+						<div class="input-group col-md-4">
+							<label class="control-label" for="alias">Alias</label>
+							<input class="form-control" id="alias" name="alias" readonly="true" type="text" value="zhang">
+						</div>
+						<!--remote_user-->
+						
+						<div class="input-group col-md-4">
+							<label class="control-label" for="remote_user">Remote User</label>
+							<input class="form-control" id="remote_user" name="remote_user" type="text" value="root">
+						</div>
+						
+						<!--remote pass-->
+						
+						<div class="input-group col-md-4">
+							<label class="control-label" for="remote_pass">Remote Password</label>
+							<input class="form-control" id="remote_pass" name="remote_pass" type="password" value="">
+						</div>
+						
+					</br>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+
+</div><!--/row-->
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% import "ui/admin_page.html" as pg %}
+{% block content %}
+                 <div>
+        <ul class="breadcrumb">
+            <li>
+                <a href="#">Home</a>
+            </li>
+            <li>
+                <a href="#">Tables</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="row">
+    <div class="box col-md-12">
+    <div class="box-inner">
+    <div class="box-header well" data-original-title="">
+        <h2><i class="glyphicon glyphicon-user"></i> Datatable + Responsive</h2>
+
+        <div class="box-icon">
+			<a href="{{ url_for('admin.host_add') }}" class="btn btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+            <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                    class="glyphicon glyphicon-chevron-up"></i></a>
+            <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+        </div>
+    </div>
+    <div class="box-content">
+    <table class="table table-striped table-bordered bootstrap-datatable  responsive">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Alias</th>
+        <th>Ip</th>
+        <th>Ip2</th>
+        <th>Port</th>
+        <th>Remote User</th>
+        <th>Group</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+	{% for v in page_data.items %}
+    <tr>
+		<td>{{ v.id }}</td>
+		<td class="center">{{ v.alias }}</td>
+		<td class="center">{{ v.ip1 }}</td>
+		<td class="center">{{ v.ip2 }}</td>
+		<td class="center">{{ v.port }}</td>
+		<td class="center">{{ v.remote_user}}</td>
+		<td class="center">{{ v.group.group_name }}</td>
+        <td class="center">
+			<a class="btn btn-success" href="{{ url_for('admin.host_view',id=v.id) }}">
+                <i class="glyphicon glyphicon-zoom-in icon-white"></i>
+                View
+            </a>
+			<a class="btn btn-info" href="{{ url_for('admin.host_edit',id=v.id) }}">
+                <i class="glyphicon glyphicon-zoom-in icon-white"></i>
+                Edit
+            </a>
+			<a class="btn btn-info" href=/hosts/host/zhang/add_sshkey>
+                <i class="glyphicon glyphicon-zoom-in icon-white"></i>
+                SSHKey
+            </a>
+            <a class="btn btn-danger" href="{{ url_for('admin.host_del',id=v.id) }}">
+                <i class="glyphicon glyphicon-zoom-in icon-white"></i>
+                Del
+            </a>
+        </td>
+    </tr>
+	{% endfor %}
+    </tbody>
+    </table>
+    <div class="box-footer clearfix">
+         {{ pg.page(page_data,'admin.host_list') }}
+    </div>
+    </div>
+    </div>
+    </div>
+    <!--/span-->
+
+    </div><!--/row-->
+
+{% endblock %}
