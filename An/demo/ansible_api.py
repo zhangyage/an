@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 '''
-    适合的是ansible2.0.0.0版本api
+    适合的是ansible2.0.0版本api
 '''
 import os
 import sys

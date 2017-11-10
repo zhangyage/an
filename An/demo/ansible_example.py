@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+'''
+    ansible 2.0.0
+'''
 import json
 from ansible_api import AnsibleAPI
 
