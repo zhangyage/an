@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-
+'''路由视图'''
 from . import admin
 from flask import render_template,url_for,request,session,flash,redirect
 from app.admin.form import GroupForm,HostForm
