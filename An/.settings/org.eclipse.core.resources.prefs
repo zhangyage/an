@@ -1,0 +1,12 @@
+eclipse.preferences.version=1
+encoding//app/__init__.py=utf8
+encoding//app/admin/__init__.py=utf8
+encoding//app/admin/form.py=utf-8
+encoding//app/admin/views.py=utf-8
+encoding//app/models.py=utf-8
+encoding//demo/amqp_ansible1.9/amqp_comsumer.py=utf-8
+encoding//demo/amqp_ansible1.9/amqp_publisher.py=utf-8
+encoding//demo/amqp_comsumer.py=utf-8
+encoding//demo/ansible_api.py=utf-8
+encoding//demo/ansible_example.py=utf-8
+encoding/manager.py=utf-8

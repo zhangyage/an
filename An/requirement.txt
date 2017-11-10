@@ -1,0 +1,7 @@
+flask==0.13.1
+mysql-python==1.2.3
+flask-sqlalchemy==2.3.2
+flask-WTF==0.14.2
+requests==2.18.4
+amqplib==1.0.2
+ansible==1.9.2
