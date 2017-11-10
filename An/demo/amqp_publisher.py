@@ -1,5 +1,6 @@
 from amqplib import client_0_8 as amqp
 import sys
+'''生产者'''
 
 conn = amqp.Connection(host="192.168.75.7:5672", userid="guest", password="guest", virtual_host="/", insist=False)
 chan = conn.channel()
