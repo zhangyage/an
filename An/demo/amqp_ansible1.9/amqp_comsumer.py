@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 '''
-        使用api ansible==1.9.2
+        使用api ansible==1.9.2  消费者
 '''
 import ansible.playbook
 from ansible import callbacks

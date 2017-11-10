@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+'''
+        使用api ansible==1.9.2  生产者
+'''
 from amqplib import client_0_8 as amqp
 import sys
 import pickle
