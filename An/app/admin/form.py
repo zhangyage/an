@@ -5,9 +5,10 @@ from flask_wtf import FlaskForm
 from wtforms import TextField,PasswordField,validators,StringField,SubmitField,FileField,TextAreaField,SelectField,SelectMultipleField
 from wtforms.validators import DataRequired,ValidationError,EqualTo,IPAddress
 from flask_wtf.file import file_allowed
-from app.models import Group
+from app.models import Group,Host
 
-groups = Group.query.all()   #获取所有的标签
+groups = Group.query.all()   #获取所有的组
+hosts = Host.query.all()     #获取说有的主机
 
 
 class GroupForm(FlaskForm):
@@ -103,14 +104,184 @@ class HostForm(FlaskForm):
     
 
     
-#     hosts = SelectMultipleField(label=u"主机列表",
-#                                 validators=[DataRequired(u'请选择主机')],
-#                                 coerce = int,
-#                                 choices = [(v.id,v.name) for v in auth_list],  #列表生成器生成选择
-#                                 render_kw={"class":"form-control", 
-#                                            "placeholder":u'请选择权限列表'
-#                               })
 
+
+class SshkeyForm(FlaskForm):
+    '''添加秘钥'''
+    alias = StringField(label=u"alias",
+                          validators=[DataRequired(u'Enter alias')],  #设置为必填项目
+                          description=u"alias",
+                          render_kw={"class":"form-control",
+                                     "id":"name",
+                                     "placeholder":"Enter Alias",
+                                     #"required":"required"     #html提示不能为空
+                              }
+                          )
+    remote_user = StringField(label=u"remote_user",
+                      validators=[DataRequired(u'Enter remote_user')],  #设置为必填项目
+                      description=u"remote_user",
+                      render_kw={"class":"form-control",
+                                 "id":"name",
+                                 "placeholder":"Enter remote_user",
+                                 #"required":"required"     #html提示不能为空
+                          }
+                      )
+    remote_password = PasswordField(label=u"remote_passwd",
+                  validators=[DataRequired(u'Enter remote_passwd')],  #设置为必填项目
+                  description=u"remote_passwd",
+                  render_kw={"class":"form-control",
+                             "id":"name",
+                             "placeholder":"Enter remote_passwd",
+                             #"required":"required"     #html提示不能为空
+                      }
+                  )
+    submit = SubmitField(label=u"提交",
+                         render_kw={"class":"btn btn-default",
+                              }
+                          )
+    
+
+class User_addForm(FlaskForm):
+    '''添加用户'''
+    alias = StringField(label=u"alias",
+                          validators=[DataRequired(u'Enter alias')],  #设置为必填项目
+                          description=u"alias",
+                          render_kw={"class":"form-control",
+                                     "id":"name",
+                                     "placeholder":"Enter Alias"                                     
+                              }
+                          )
+    host_group = SelectField(label="Select Group / Host",
+                  validators=[DataRequired('Select Group / Host')],  #设置为必填项目
+                  coerce = int,
+                  choices = [(v.id,v.alias) for v in hosts],  #列表生成器生成选择 
+                  description="Select Some Options",
+                  render_kw={"class":"form-control", 
+                             "id":"input_tag_id",
+                             "placeholder":"Select Some Options"
+                          }
+                  )
+    remote_user = StringField(label=u"remote_user",
+                      validators=[DataRequired(u'Enter remote_user')],  #设置为必填项目
+                      description=u"remote_user",
+                      render_kw={"class":"form-control",
+                                 "id":"name",
+                                 "placeholder":"Enter remote_user",
+                                 #"required":"required"     #html提示不能为空
+                          }
+                      )
+    username = StringField(label=u"remote_user",
+                      validators=[DataRequired(u'Enter remote_user')],  #设置为必填项目
+                      description=u"remote_user",
+                      render_kw={"class":"form-control",
+                                 "id":"name",
+                                 "placeholder":"Enter remote_user",
+                                 #"required":"required"     #html提示不能为空
+                          }
+                      )
+    password = PasswordField(label=u"remote_passwd",
+                  validators=[DataRequired(u'Enter remote_passwd')],  #设置为必填项目
+                  description=u"remote_passwd",
+                  render_kw={"class":"form-control",
+                             "id":"name",
+                             "placeholder":"Enter remote_passwd",
+                             #"required":"required"     #html提示不能为空
+                      }
+                  )
+    submit = SubmitField(label=u"添加",
+                         render_kw={"class":"btn btn-default",
+                              }
+                          )
+
+
+class User_delForm(FlaskForm):
+    '''删除用户'''
+    alias = StringField(label=u"alias",
+                          validators=[DataRequired(u'Enter alias')],  #设置为必填项目
+                          description=u"alias",
+                          render_kw={"class":"form-control",
+                                     "id":"name",
+                                     "placeholder":"Enter Alias"                                     
+                              }
+                          )
+    host_group = SelectField(label="Select Group / Host",
+                  validators=[DataRequired('Select Group / Host')],  #设置为必填项目
+                  coerce = int,
+                  choices = [(v.id,v.alias) for v in hosts],  #列表生成器生成选择 
+                  description="Select Some Options",
+                  render_kw={"class":"form-control", 
+                             "id":"input_tag_id",
+                             "placeholder":"Select Some Options"
+                          }
+                  )
+    remote_user = StringField(label=u"remote_user",
+                      validators=[DataRequired(u'Enter remote_user')],  #设置为必填项目
+                      description=u"remote_user",
+                      render_kw={"class":"form-control",
+                                 "id":"name",
+                                 "placeholder":"Enter remote_user",
+                                 #"required":"required"     #html提示不能为空
+                          }
+                      )
+    username = StringField(label=u"remote_user",
+                      validators=[DataRequired(u'Enter remote_user')],  #设置为必填项目
+                      description=u"remote_user",
+                      render_kw={"class":"form-control",
+                                 "id":"name",
+                                 "placeholder":"Enter remote_user",
+                                 #"required":"required"     #html提示不能为空
+                          }
+                      )    
+    submit = SubmitField(label=u"添加",
+                         render_kw={"class":"btn btn-default",
+                              }
+                          )
+
+
+class User_addpubForm(FlaskForm):
+    '''通过密钥添加用户'''
+    host_group = SelectField(label="Select Group / Host",
+                  validators=[DataRequired('Select Group / Host')],  #设置为必填项目
+                  coerce = int,
+                  choices = [(v.id,v.alias) for v in hosts],  #列表生成器生成选择 
+                  description="Select Some Options",
+                  render_kw={"class":"form-control", 
+                             "id":"input_tag_id",
+                             "placeholder":"Select Some Options"
+                          }
+                  )
+    remote_user = StringField(label=u"remote_user",
+                      validators=[DataRequired(u'Enter remote_user')],  #设置为必填项目
+                      description=u"remote_user",
+                      render_kw={"class":"form-control",
+                                 "id":"name",
+                                 "placeholder":"Enter remote_user",
+                                 #"required":"required"     #html提示不能为空
+                          }
+                      )
+    username = StringField(label=u"remote_user",
+                      validators=[DataRequired(u'Enter remote_user')],  #设置为必填项目
+                      description=u"remote_user",
+                      render_kw={"class":"form-control",
+                                 "id":"name",
+                                 "placeholder":"Enter remote_user",
+                                 #"required":"required"     #html提示不能为空
+                          }
+                      ) 
+    host_group = SelectField(label="Key",
+                  validators=[DataRequired('Select Key')],  #设置为必填项目
+                  coerce = int,
+                  choices = [(v.id,v.alias) for v in hosts],  #列表生成器生成选择 
+                  description="Select Some Options",
+                  render_kw={"class":"form-control", 
+                             "id":"input_tag_id",
+                             "placeholder":"Select Keys"
+                          }
+                  )   
+    submit = SubmitField(label=u"添加",
+                         render_kw={"class":"btn btn-default",
+                              }
+                          )
  
 
 

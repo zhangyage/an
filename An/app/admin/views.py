@@ -3,9 +3,17 @@
 '''路由视图'''
 from . import admin
 from flask import render_template,url_for,request,session,flash,redirect
-from app.admin.form import GroupForm,HostForm
+from app.admin.form import GroupForm,HostForm,SshkeyForm,User_addForm,User_delForm,User_addpubForm
 from app.models import Group,Host
-from app import db
+from app import db,app
+#ansible
+from ansible.runner import Runner
+from app.plugins import amqp_comsumer
+from app.plugins.amqp_publisher import send2msg
+
+
+#秘钥位置
+ANSIBLE_KEY = '/root/.ssh/id_rsa.pub'
 
 @admin.route("/")
 def index():
@@ -95,6 +103,29 @@ def host_del(id=None):
     flash(u"删除主机成功", "OK")
     return redirect(url_for('admin.host_list',page=1))
 
+#添加秘钥
+@admin.route("/add_sshkey/<int:id>/", methods=["GET","POST"])
+def add_sshkey(id=None):
+    form = SshkeyForm()
+    host = Host.query.get_or_404(id)
+    if form.validate_on_submit():
+        data = form.data
+        remote_user = data["remote_user"]
+        remote_password = data["remote_password"]
+        
+        runner = Runner(
+                        module_name='authorized_key',
+                        module_args={'user': remote_user,
+                                     'key': open(app.config["ANSIBLE_KEY"]).read()
+                                     },
+                        pattern=host.ip1,
+                        #inventory=autils.get_inventory(g.mysql_db),
+                        remote_user=remote_user,
+                        remote_pass=remote_password)
+        info = runner.run()
+        print info 
+    return render_template("host_addsshk.html",form=form,host=host)
+
 
 
 #添加组
@@ -129,7 +160,62 @@ def group_list(page=None):
         ).order_by(
         Group.addtime.asc()
     ).paginate(page=page, per_page=10)   #paginate分页 (page页码,per_page条目数)
-#     for i in page_data.items:
-#         for j in i.hosts:
-#             print j.alias
+
     return render_template("group_list.html",page_data=page_data)
+
+#任务页面
+@admin.route("/job_general/", methods=["GET"])
+def job_general():
+    return render_template("job_general.html")
+
+#添加用户  密码
+@admin.route("/user_add/", methods=["GET","POST"])
+def user_add():
+    form = User_addForm()
+    if form.validate_on_submit():
+        data = form.data
+    return render_template("user_add.html",form=form)
+
+#删除用户 密码
+@admin.route("/user_del/", methods=["GET","POST"])
+def user_del():
+    form = User_delForm()
+    if form.validate_on_submit():
+        data = form.data 
+    return render_template("/user_del.html",form=form)
+
+
+#添加用户  密码
+@admin.route("/user_add_by_pubkey/", methods=["GET","POST"])
+def user_add_by_pubkey():
+    form = User_addpubForm()
+    if form.validate_on_submit():
+        data = form.data
+    return render_template("user_add_by_pubkey.html",form=form)
+
+#mysql  
+@admin.route("/job_mysql/", methods=["GET"])
+def job_mysql():
+    return render_template("mysql_install.html")
+
+#php 
+@admin.route("/job_php/", methods=["GET"])
+def job_php():
+    return render_template("php_install.html")
+
+#other任务
+@admin.route("/job_total/", methods=["GET"])
+def job_other():
+    return render_template("other_job.html")
+
+#demo cu
+@admin.route("/cu_total/", methods=["GET"])
+def cu_other():
+    amqp_comsumer
+    return render_template("other_job.html")
+
+#demo Pu
+@admin.route("/pu_total/", methods=["GET"])
+def pu_other():
+    send2msg
+    return render_template("other_job.html")

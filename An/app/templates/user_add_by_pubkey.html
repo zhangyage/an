@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}				
+<div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="#">Home</a>
+        </li>
+        <li>
+            <a href="#">Forms</a>
+        </li>
+    </ul>
+</div>
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Form Elements</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+				<form role="form" method="post">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Template Name</label>
+						<input type="text" class="form-control" id="exampleInputEmail1" readonly="true" name="yml_temp_name" value=_add_user_by_pubkey>
+                    </div>
+					<div class="control-group">
+						<label class="control-label" for="selectError1">Select Group / Host</label>
+
+						<div class="controls">
+							<select id="selectError1" multiple class="form-control" name="selected_alias" data-rel="chosen">
+								{{ form.host_group }}
+								{% for err in form.host_group.errors %}
+								<div class="alert alert-danger">
+								<button type="button" class="close" data-dismiss="alert">&times;</button>
+								<strong>Oh snap!</strong> {{ err }}
+								</div>
+								{% endfor %}
+							</select>
+						</div>
+						
+					</div>
+					<br>
+					
+                    <div class="form-group">
+						<label for="exampleInputEmail1">Remote User</label>
+						{{ form.remote_user }}
+						{% for err in form.remote_user.errors %}
+						<div class="alert alert-danger">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						<strong>Oh snap!</strong> {{ err }}
+						</div>
+						{% endfor %}
+                    </div>
+					
+					
+                    <div class="form-group">
+						<label for="exampleInputEmail1">Username</label>
+						{{ form.username }}
+						{% for err in form.username.errors %}
+						<div class="alert alert-danger">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						<strong>Oh snap!</strong> {{ err }}
+						</div>
+						{% endfor %}
+                    </div>
+					
+					
+                    <div class="form-group">
+						<label for="exampleInputEmail1">Key</label>
+						<select class="form-control" id="exampleInputEmail1" name="key" placeholder="Enter Key"><option value="hongtongliang.pub">hongtongliang.pub</option><option value="duzhixia.pub">duzhixia.pub</option><option value="zhujinlong.pub">zhujinlong.pub</option><option value="liumingfei.pub">liumingfei.pub</option><option value="songkun.pub">songkun.pub</option><option value="zhangbiao.pub">zhangbiao.pub</option><option value="guojuanjuan.pub">guojuanjuan.pub</option><option value="sunhongliang.pub">sunhongliang.pub</option><option value="lilei.pub">lilei.pub</option><option value="chengxuwei.pub">chengxuwei.pub</option><option value="zhaolulu.pub">zhaolulu.pub</option><option value="wukun.pub">wukun.pub</option><option value="hongxiaodi.pub">hongxiaodi.pub</option><option value="fulei.pub">fulei.pub</option><option value="liaoyongxiong.pub">liaoyongxiong.pub</option><option value="zhanghongbing.pub">zhanghongbing.pub</option><option value="deliver.pub">deliver.pub</option><option value="chenchangming.pub">chenchangming.pub</option><option value="zhaozhenxing.pub">zhaozhenxing.pub</option><option value="wanghaidong.pub">wanghaidong.pub</option><option value="zhangshaopo.pub">zhangshaopo.pub</option><option value="liyan.pub">liyan.pub</option><option value="zhangenrui.pub">zhangenrui.pub</option><option value="zhangkai.pub">zhangkai.pub</option><option value="jiangbing.pub">jiangbing.pub</option><option value="liuchenxi.pub">liuchenxi.pub</option></select>
+                    </div>
+					
+				<br>
+				{{ form.submit }}
+				{{ form.token }}
+				</form>
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+
+</div><!--/row-->
+{% endblock %}
