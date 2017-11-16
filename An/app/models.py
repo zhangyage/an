@@ -122,11 +122,12 @@ class Group(db.Model):
 class Jobs(db.Model):
     __tablename__="jobs"
     id = db.Column(db.Integer, primary_key=True)  # 编号
-    started = db.Column(db.SmallInteger)  # 用户状态，1为活跃，0为禁用
-    finished = db.Column(db.SmallInteger)  # 用户状态，1为活跃，0为禁用
-    template_name = db.Column(db.String(255), unique=True)
+    object = db.Column(db.String(255))
+    started = db.Column(db.String(255))  # 用户状态，1为活跃，0为禁用
+    finished = db.Column(db.String(255))  # 用户状态，1为活跃，0为禁用
+    template_name = db.Column(db.String(255))
     args = db.Column(db.String(255))
-    status = db.Column(db.String(255))
+    status = db.Column(db.Integer)
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  #添加时间
 
 '''    

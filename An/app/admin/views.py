@@ -4,12 +4,12 @@
 from . import admin
 from flask import render_template,url_for,request,session,flash,redirect
 from app.admin.form import GroupForm,HostForm,SshkeyForm,User_addForm,User_delForm,User_addpubForm
-from app.models import Group,Host
+from app.models import Group,Host,Jobs
 from app import db,app
 #ansible
 from ansible.runner import Runner
-from app.plugins import amqp_comsumer
-from app.plugins.amqp_publisher import send2msg
+from app.plugins import amqp_publisher
+
 
 
 #秘钥位置
@@ -112,7 +112,7 @@ def add_sshkey(id=None):
         data = form.data
         remote_user = data["remote_user"]
         remote_password = data["remote_password"]
-        
+         
         runner = Runner(
                         module_name='authorized_key',
                         module_args={'user': remote_user,
@@ -120,10 +120,12 @@ def add_sshkey(id=None):
                                      },
                         pattern=host.ip1,
                         #inventory=autils.get_inventory(g.mysql_db),
+			host_list='/root/host.py',
                         remote_user=remote_user,
                         remote_pass=remote_password)
         info = runner.run()
         print info 
+	print  remote_user, remote_password,host.ip1,app.config["ANSIBLE_KEY"]
     return render_template("host_addsshk.html",form=form,host=host)
 
 
@@ -171,9 +173,19 @@ def job_general():
 #添加用户  密码
 @admin.route("/user_add/", methods=["GET","POST"])
 def user_add():
-    form = User_addForm()
+    form =  User_addForm() 
+    yml_temp_name = '_add_user'     
     if form.validate_on_submit():
         data = form.data
+        hosts = Host.query.filter_by(id=data['host_group']).first_or_404()
+        args = {'host' : hosts.ip1,
+                'user' : data['remote_user'],
+                'username' : data['username'],
+                'password' : data['password']
+                }
+        amqp_publisher.send2msg(yml_temp_name,args,hosts.alias)
+        flash(u"任务添加成功",'ok')
+        return redirect(url_for('admin.job_list',page=1))
     return render_template("user_add.html",form=form)
 
 #删除用户 密码
@@ -194,6 +206,17 @@ def user_add_by_pubkey():
     return render_template("user_add_by_pubkey.html",form=form)
 
 #mysql  
+@admin.route("/job_list/<int:page>/", methods=["GET"])
+def job_list(page=None):
+    if page is None:
+        page = 1
+    page_data = Jobs.query.order_by(
+        Jobs.addtime.asc()
+    ).paginate(page=page, per_page=10)   #paginate分页 (page页码,per_page条目数)
+    return render_template("jobs_list.html",page_data=page_data)
+
+
+#mysql  
 @admin.route("/job_mysql/", methods=["GET"])
 def job_mysql():
     return render_template("mysql_install.html")
@@ -206,16 +229,4 @@ def job_php():
 #other任务
 @admin.route("/job_total/", methods=["GET"])
 def job_other():
-    return render_template("other_job.html")
-
-#demo cu
-@admin.route("/cu_total/", methods=["GET"])
-def cu_other():
-    amqp_comsumer
-    return render_template("other_job.html")
-
-#demo Pu
-@admin.route("/pu_total/", methods=["GET"])
-def pu_other():
-    send2msg
     return render_template("other_job.html")

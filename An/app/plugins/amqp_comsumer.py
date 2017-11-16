@@ -2,6 +2,10 @@
 # -*- coding:utf-8 -*-
 '''
         使用api ansible==1.9.2  消费者
+        status 0  发送消息
+               1  ansible不可达
+               2  失败
+               3  成功
 '''
 import ansible.playbook
 from ansible import callbacks
@@ -11,12 +15,10 @@ import sys
 import pickle
 import os
 import json
-from app.models import Jobs
-from app import db
+from model import Jobs
 from datetime import datetime
 
 
-#def ansible_book(db, pb, args):
 def ansible_book(pb, args,id):
     stats = callbacks.AggregateStats()
     playbook_cb = callbacks.PlaybookCallbacks(verbose=utils.VERBOSITY)
@@ -28,24 +30,29 @@ def ansible_book(pb, args,id):
         callbacks=playbook_cb,          #必填参数
         runner_callbacks=runner_cb,     #必填参数
         #check=True                     #测试执行，设置为这个True的时候只会输出执行结果   但是不会在真实服务器上执行
+        #inventory='/root/my_app/get_inventory.py'
+        host_list='/root/host.py'
     )
     result = playbook.run()
     result = json.dumps(result,indent=4)
-    #更新任务状态
-    job = Jobs.query.get_or_404(id)
-    job.finished = datetime.now()
-    job.status = 1
-    db.session.add(job)
-    db.session.commit()
+    
     return result
 
 def recv_callback(msg):                 #获取消息传来的值作为参数处理 
     yml_temp_name, args ,id= pickle.loads(msg.body)
     pb = os.path.join(os.path.join('/root', yml_temp_name), 'main.yml')   #拼合剧本路径
-    print pb
-    print args
+    #print pb
+    #print args
     status = ansible_book(pb, args,id)
-    print  status
+    job = Jobs()
+    for key,value in json.loads(status).items():
+        if value['unreachable'] != 0:
+            #更新任务状态
+            job.Simple_update(finished=datetime.now(), status=1, id=id)
+        elif value['failures'] != 0:
+            job.Simple_update(finished=datetime.now(), status=2, id=id)
+        else:
+            job.Simple_update(finished=datetime.now(), status=3, id=id)
     
 
 conn = amqp.Connection(host="127.0.0.1:5672", userid="guest", password="guest", virtual_host="/", insist=False)

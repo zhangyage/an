@@ -29,7 +29,7 @@
 				<form role="form" method="post">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Template Name</label>
-						<input type="text" class="form-control" id="exampleInputEmail1" readonly="true" name="yml_temp_name" value=_add_user>
+						{{ form.yml_temp_name( value="_add_user", readonly="true") }}
                     </div>
 					<div class="control-group">
 						<label class="control-label" for="selectError1">Select Group / Host</label>
@@ -84,7 +84,7 @@
 					
 				<br>
 				{{ form.submit }}
-				{{ form.token }}
+                {{ form.csrf_token }}
 				</form>
             </div>
         </div>

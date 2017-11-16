@@ -143,12 +143,13 @@ class SshkeyForm(FlaskForm):
 
 class User_addForm(FlaskForm):
     '''添加用户'''
-    alias = StringField(label=u"alias",
-                          validators=[DataRequired(u'Enter alias')],  #设置为必填项目
+    yml_temp_name = StringField(label=u"yml_temp_name",
+                          validators=[DataRequired(u'yml_temp_name')],  #设置为必填项目
                           description=u"alias",
                           render_kw={"class":"form-control",
                                      "id":"name",
-                                     "placeholder":"Enter Alias"                                     
+                                     "placeholder":"Enter yml_temp_name",
+                                     #"value":"_add_user"                                     
                               }
                           )
     host_group = SelectField(label="Select Group / Host",
