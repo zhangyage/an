@@ -1,0 +1,3 @@
+使用系统需要先在客户机中安装一下libselinux-python
+
+需要制定一下host.py主机列表文件的路径
