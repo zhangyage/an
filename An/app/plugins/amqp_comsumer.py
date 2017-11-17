@@ -31,7 +31,7 @@ def ansible_book(pb, args,id):
         runner_callbacks=runner_cb,     #必填参数
         #check=True                     #测试执行，设置为这个True的时候只会输出执行结果   但是不会在真实服务器上执行
         #inventory='/root/my_app/get_inventory.py'
-        host_list='/root/host.py'
+        host_list='/root/my_app/app/host.py'
     )
     result = playbook.run()
     result = json.dumps(result,indent=4)

@@ -120,7 +120,7 @@ def add_sshkey(id=None):
                                      },
                         pattern=host.ip1,
                         #inventory=autils.get_inventory(g.mysql_db),
-			host_list='/root/host.py',
+			host_list='/root/my_app/app/host.py',
                         remote_user=remote_user,
                         remote_pass=remote_password)
         info = runner.run()

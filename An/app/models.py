@@ -4,7 +4,6 @@
      @存放数据模型
      @配置参考：http://www.pythondoc.com/flask-sqlalchemy/
 '''
-'''
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import pymysql
@@ -18,6 +17,7 @@ db = SQLAlchemy(app)
 '''
 from datetime import datetime
 from app import db
+'''
 
 #用户表或管理员表
 class User(db.Model):
@@ -127,7 +127,7 @@ class Jobs(db.Model):
     finished = db.Column(db.String(255))  # 用户状态，1为活跃，0为禁用
     template_name = db.Column(db.String(255))
     args = db.Column(db.String(255))
-    status = db.Column(db.Integer)
+    status = db.Column(db.String(255))
     addtime = db.Column(db.DateTime, index=True, default=datetime.now)  #添加时间
 
 '''    
